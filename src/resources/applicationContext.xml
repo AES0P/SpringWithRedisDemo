@@ -1,0 +1,45 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.hzero.demo.springwithredis"/>
+
+    <bean name="ObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+    <import resource="spring-redis.xml"/>
+
+    <!-- 开启注解任务 -->
+    <task:annotation-driven/>
+    <!--    <task:scheduled-tasks>-->
+    <!--        <task:scheduled ref="testTask" method="task"-->
+    <!--                        cron="0/5 * * * * ?"/>&lt;!&ndash;每五秒钟执行打印一次&ndash;&gt;-->
+    <!--    </task:scheduled-tasks>-->
+
+    <!--缓存待实现-->
+    <!--    &lt;!&ndash; spring自己的缓存管理器，这里定义了缓存位置名称 ，即注解中的value &ndash;&gt;-->
+    <!--    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">-->
+    <!--        <property name="caches">-->
+    <!--            <set>-->
+    <!--                &lt;!&ndash; 这里可以配置多个redis &ndash;&gt;-->
+    <!--                <bean class="com.hzero.demo.springwithredis.spring.cache.RedisCache">-->
+    <!--                    <property name="redisTemplate" ref="redisTemplate"/>-->
+    <!--                    <property name="name" value="content"/>-->
+    <!--                </bean>-->
+    <!--            </set>-->
+
+    <!--        </property>-->
+    <!--    </bean>-->
+
+    <!--    &lt;!&ndash; 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 &ndash;&gt;-->
+    <!--    <cache:annotation-driven cache-manager="cacheManager"/>-->
+
+
+</beans>
+
+

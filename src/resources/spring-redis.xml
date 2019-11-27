@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <context:property-placeholder location="classpath:*.properties"/>
+
+    <!-- redis 相关配置 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大空闲数 -->
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <!-- 最大连接数 -->
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <!-- 连接时最大的等待时间（毫秒） -->
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+        <!-- 在提取一个jedis实例时，是否提前进行验证操作；如果为true，则得到的jedis实例均是可用的 -->
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+    </bean>
+
+    <!-- sprin_data_redis 单机配置 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.pass}"/>
+        <property name="poolConfig" ref="poolConfig"/>
+    </bean>
+
+    <!-- key序列化 -->
+
+    <!-- StringRedisSerializer -->
+    <bean id="stringRedisSerializer"
+          class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <!-- JdkSerializationRedisSerializer -->
+    <bean id="jdkSerializationRedisSerializer"
+          class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+
+    <!-- stringRedisTemplate -->
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
+          p:connectionFactory-ref="jedisConnectionFactory"/>
+
+    <!-- redisTemplate -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <!--开启事务支持-->
+        <property name="enableTransactionSupport" value="true"/>
+        <!--        &lt;!&ndash; 序列化策略 推荐使用StringRedisSerializer &ndash;&gt;
+        如果不进行序列化，虽然java代码查出来没啥问题，但是其他地方如redis client里通过keys *查出来是乱码哦
+        如果你的数据需要被第三方工具解析，那么数据应该使用StringRedisSerializer而不是JdkSerializationRedisSerializer。-->
+        <property name="keySerializer" ref="stringRedisSerializer"/>
+        <property name="valueSerializer"
+                  ref="jdkSerializationRedisSerializer"/><!--配置了JdkSerializationRedisSerializer来做一些对象的存储-->
+        <property name="hashKeySerializer" ref="stringRedisSerializer"/>
+        <property name="hashValueSerializer" ref="stringRedisSerializer"/>
+        <property name="defaultSerializer" ref="stringRedisSerializer"/>
+    </bean>
+
+    <!-- 定义监听容器 -->
+    <bean id="redisMessageListenerContainer"
+          class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <!-- 任务执行器 -->
+        <property name="messageListeners">
+            <map>
+                <entry key-ref="redisMessageListener">
+                    <list>
+                        <bean class="org.springframework.data.redis.listener.PatternTopic">
+                            <constructor-arg value="chat*"/><!--PatternTopic 可模糊指定-->
+                        </bean>
+                        <bean class="org.springframework.data.redis.listener.ChannelTopic">
+                            <constructor-arg value="aesop"/><!--ChannelTopic 不可模糊指定-->
+                        </bean>
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+
+</beans>
