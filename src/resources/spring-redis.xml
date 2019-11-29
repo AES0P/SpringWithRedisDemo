@@ -15,7 +15,7 @@
         <!-- 最大空闲数 -->
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <!-- 最大连接数 -->
-        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="maxTotal" value="${redis.maxTotal}"/>
         <!-- 连接时最大的等待时间（毫秒） -->
         <property name="maxWaitMillis" value="${redis.maxWait}"/>
         <!-- 在提取一个jedis实例时，是否提前进行验证操作；如果为true，则得到的jedis实例均是可用的 -->
@@ -60,7 +60,11 @@
         <property name="defaultSerializer" ref="stringRedisSerializer"/>
     </bean>
 
+
     <!-- 定义监听容器 -->
+
+    <bean id="redisMessageListener" class="com.hzero.demo.springwithredis.redis.subscribe.MsgListener"/>
+
     <bean id="redisMessageListenerContainer"
           class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>

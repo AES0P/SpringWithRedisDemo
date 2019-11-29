@@ -5,6 +5,7 @@ import com.hzero.demo.springwithredis.spring.dao.impl.UserDaoImpl;
 import com.hzero.demo.springwithredis.spring.model.User;
 import com.hzero.demo.springwithredis.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ public class UserServiceImpl implements UserService {
     public RedisUtils redisUtils;
 
     @Override
-//    @CachePut(value = "content", key = "#user.getId()")
     public Boolean saveUser(User user) throws Exception {
 
         if (userDao.saveUser(user)) {
@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    @CacheEvict(value = "content", key = UserDaoImpl.PREFIX + "(#user.getId())")
     public Boolean deleteUserById(int id) {
 
         if (userDao.deleteUserById(id)) {
@@ -69,7 +68,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    @Cacheable(value = "content", key = UserDaoImpl.PREFIX + "(#user.getId())")
     public User findUserById(int id) throws IOException {
 
         redisUtils.sendMessage("aesop", new Date() + ": findUserById:" + id);

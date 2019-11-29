@@ -39,7 +39,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
-            <scope>test</scope>
+            <!--            <scope>test</scope>-->
         </dependency>
 
         <!-- Spring Core -->
@@ -99,13 +99,6 @@
             <version>2.9.10</version>
         </dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- 日志slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -113,12 +106,6 @@
             <version>1.7.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>2.3.0</version>
-        </dependency>
     </dependencies>
 
 

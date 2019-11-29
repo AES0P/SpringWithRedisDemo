@@ -21,24 +21,6 @@
     <!--                        cron="0/5 * * * * ?"/>&lt;!&ndash;每五秒钟执行打印一次&ndash;&gt;-->
     <!--    </task:scheduled-tasks>-->
 
-    <!--缓存待实现-->
-    <!--    &lt;!&ndash; spring自己的缓存管理器，这里定义了缓存位置名称 ，即注解中的value &ndash;&gt;-->
-    <!--    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">-->
-    <!--        <property name="caches">-->
-    <!--            <set>-->
-    <!--                &lt;!&ndash; 这里可以配置多个redis &ndash;&gt;-->
-    <!--                <bean class="com.hzero.demo.springwithredis.spring.cache.RedisCache">-->
-    <!--                    <property name="redisTemplate" ref="redisTemplate"/>-->
-    <!--                    <property name="name" value="content"/>-->
-    <!--                </bean>-->
-    <!--            </set>-->
-
-    <!--        </property>-->
-    <!--    </bean>-->
-
-    <!--    &lt;!&ndash; 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 &ndash;&gt;-->
-    <!--    <cache:annotation-driven cache-manager="cacheManager"/>-->
-
 
 </beans>
 

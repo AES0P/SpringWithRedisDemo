@@ -22,13 +22,13 @@ public class UserDaoImpl implements UserDao {
     public static final String PREFIX = "USER_";
 
     @Autowired
-    RedisUtils redisUtils;
+    RedisUtils redisUtils;//封装了操作redis的方法
 
     @Autowired
-    JacksonUtil jacksonUtil;
+    JacksonUtil jacksonUtil;//json序列化工具
 
     @Autowired
-    EncryptUtil encryptUtil;
+    EncryptUtil encryptUtil;//给序列化后的数据进行加密解密用
 
     @Override
     public Boolean saveUser(User user) throws Exception {
